@@ -1,0 +1,11 @@
+.footer {
+    background-color: var(--fg);
+    color: white;
+    padding: 1rem;
+    text-align: end;
+    height: 50px;
+}
+
+.footer p{
+    color: var(--txt-secondary)
+}

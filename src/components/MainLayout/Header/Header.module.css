@@ -1,0 +1,22 @@
+.header {
+    background-color: var(--fg);
+    color: white;
+    padding: 1rem;
+    text-align: center;
+    height: 100px;
+    display: grid;
+    grid-template-columns: 270px 1fr 270px;
+}
+
+.vrtLine{
+    width: 3px;
+    height: 100%;
+    border-radius: 15px;
+    background: var(--txt-secondary);
+}
+
+.gridColumn{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
