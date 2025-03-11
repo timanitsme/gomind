@@ -22,7 +22,7 @@ export default function Sidebar({paths}){
                 { paths.map(path =>{
                     const isActive = isCurrentPath(path.path);
                     return(
-                        <Link key={path.title} to={path.path} style={{textDecoration: "none"}}>
+                        <Link key={path.title} to={ path.children && path.children.length > 0? [path.path, path.children[0].path].join( '/'): path.path} style={{textDecoration: "none"}}>
                             <div className={`${styles.sidebarRoute} ${isActive ? '' : styles.notActive}`}>
                                 <Icon IconComponent={path.svg} size={ICON_SIZE} color={isActive ? fgColor: txtSecondaryColor}/>
                                 <h3 style={{color: isActive ? fgColor : txtSecondaryColor}}>

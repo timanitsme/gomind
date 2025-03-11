@@ -9,9 +9,23 @@ import {useLocation} from "react-router-dom";
 export default function MainLayout({children, paths}){
     const currentPath = useLocation().pathname;
 
+    const getParentTitle = () => {
+        // Сортируем пути по длине (от длинных к коротким)
+        const sortedPaths = [...paths].sort((a, b) =>
+            b.path.length - a.path.length
+        );
+
+        // Находим первый путь, который является началом текущего URL
+        const matchedPath = sortedPaths.find(path =>
+            currentPath.startsWith(path.path.replace(/\/$/, "")) // Убираем завершающий слэш
+        );
+
+        return matchedPath?.title;
+    };
+
     return(
         <>
-            <Header>{paths.find(path => currentPath === path.path).title}</Header>
+            <Header>{getParentTitle()}</Header>
             <div className={styles.mainLayout}>
                 <Sidebar paths={paths} />
                 <div className={styles.contentContainer}>

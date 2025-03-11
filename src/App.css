@@ -8,6 +8,7 @@
   --fg: #FFFFFF;
   --primary: #3E70C7;
   --btn-hover: #9DC3E7;
+  --err-primary: #F64E60;
 }
 * {
   font-family: "Inter", sans-serif;
@@ -26,5 +27,13 @@ h1, h2, h3{
   color: var(--txt-primary);
   text-align: center;
   align-self: center;
+}
+
+.noSelect {
+  -webkit-touch-callout: none;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
 }
 
