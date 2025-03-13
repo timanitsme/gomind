@@ -1,0 +1,94 @@
+.cardsContainer {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+    gap: 20px;
+    padding: 20px;
+    box-sizing: border-box;
+}
+
+.adCard {
+    background-color: var(--fg);
+    border: 2px solid var(--btn-secondary);
+    border-radius: 8px;
+    overflow: hidden;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    cursor: pointer;
+    padding: 10px;
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+}
+
+
+.imageWrapper {
+    width: calc(100%);
+    height: 150px;
+    border-radius: 10px;
+    overflow: hidden;
+    background-color: var(--btn-secondary);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.imageWrapper img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.adCard .title {
+    color: var(--txt-primary);
+    text-align: left;
+    font-weight: bold;
+}
+
+.adCard .description {
+    color: var(--txt-secondary);
+    text-align: justify-all;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
+}
+
+.buttonsContainer{
+    display: flex;
+    align-items: center;
+    justify-content: space-around;
+}
+
+.buttonsContainer button{
+    padding: 7px 15px;
+    border-radius: 5px;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+.buttonsContainer .success{
+    color: var(--success-primary);
+    background: var(--success-secondary);
+}
+
+.buttonsContainer .success:hover{
+    background: var(--success-hover);
+    transition: 0.5s;
+}
+
+.buttonsContainer .error{
+    color: var(--err-primary);
+    background: var(--err-secondary);
+}
+
+.buttonsContainer .error:hover{
+    background: var(--err-hover);
+    transition: 0.5s;
+}
+
+
+.adCard .cost {
+    font-weight: bold;
+    color: var(--primary);
+    text-align: center;
+}

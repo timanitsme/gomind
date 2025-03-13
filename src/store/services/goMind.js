@@ -46,11 +46,23 @@ export const goMindApi = createApi({
                     method: "POST"
                 })
             }
-        })
+        }),
+        getAllUsers: (builder.query({
+            query:  ({page, size}) =>{
+                const params = new URLSearchParams();
+                params.append('page', page.toString());
+                params.append('size', size.toString());
+                return(`admin/all-users?${params.toString()}`)
+            }
+        })),
+        getAdvertisementsByCost: (builder.query({
+            query: () => `quiz/advertisements-by-cost`
+        })),
 
     })
 })
 
 
 
-export const {useLoginMutation, useGetUserProfileQuery, useRefreshTokenMutation, useRefreshTokenCookieMutation} = goMindApi
+export const {useLoginMutation, useGetUserProfileQuery, useRefreshTokenMutation, useRefreshTokenCookieMutation,
+    useGetAllUsersQuery} = goMindApi

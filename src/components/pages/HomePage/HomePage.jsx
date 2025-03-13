@@ -1,7 +1,11 @@
+import {useRefreshTokenCookieMutation} from "../../../store/services/goMind.js";
 
 
 export default function HomePage(){
-    return(
-        <p>Здесь будет контент главной страницы</p>
+
+    return (
+        <div>
+            <p>Здесь будет контент главной страницы</p>
+        </div>
     );
 }

@@ -9,11 +9,14 @@ export default function TabsSection({tabs}){
     const activeTab = tabs.find(tab => location.pathname.endsWith(tab.path))?.title || tabs[0].title;
 
     useEffect(() => {
-        // Переход на вкладку при первом рендере
-        if (!location.pathname.startsWith('/users')) {
-            navigate('/users');
+        // Проверяем, соответствует ли текущий путь одной из вкладок
+        const isPathValid = tabs.some(tab => location.pathname.endsWith(tab.path));
+
+        // Если путь не соответствует ни одной вкладке, перенаправляем на первую вкладку
+        if (!isPathValid) {
+            navigate(tabs[0].path); // Перенаправляем на первую вкладку по умолчанию
         }
-    }, [location, navigate]);
+    }, [location, navigate, tabs]);
 
     return (
         <div className={styles.innerLinksContainer}>

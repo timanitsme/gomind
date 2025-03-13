@@ -171,6 +171,11 @@
     font-size: 0.8rem;
 }
 
+.passwordContainer svg{
+    min-width: 20px;
+    min-height: 20px;
+}
+
 .authForm input.error{
     border: 2px solid var(--err-primary);
 }

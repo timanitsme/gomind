@@ -1,12 +1,18 @@
+.sidebarBackground{
+    width: 100px;
+}
+
 .sidebar {
     background-color: var(--fg);
     color: white;
     transition: width 0.3s;
     height: 100%;
+    position: absolute;
     display: flex;
     flex-direction: column;
     align-items: center;
     gap: 15px;
+    z-index: 800;
 }
 
 .sidebar.collapsed {

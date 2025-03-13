@@ -4,12 +4,14 @@ import {useEffect, useState} from "react";
 import {goMindApi, useLoginMutation} from "../../../store/services/goMind.js";
 import {useDispatch, useSelector} from "react-redux";
 import {logout, setCredentials, setUserProfile} from "../../../store/services/authSlice.js";
+import {MdVisibility, MdVisibilityOff} from "react-icons/md";
 
 export default function Header({children}){
     const dispatch = useDispatch()
     const { isAuthorized, userProfile, isLoading: profileIsLoading } = useSelector((state) => state.auth);
     const [menuVisible, setMenuVisible] = useState(false);
     const [modalOpen, setModalOpen] = useState(false)
+    const [showPassword, setShowPassword] = useState(false)
     const [formData, setFormData] = useState({
         email: '',
         password: ''
@@ -132,8 +134,35 @@ export default function Header({children}){
                                 <input type="text" className={error !== '' && formData.email === '' ? styles.error : ''} name="email" value={formData.email} placeholder="Введите ваш email" onChange={handleChange}/>
                             </label>
                             <label>Пароль
-                                <input type="text" className={error !== '' && formData.password === '' ? styles.error : ''} name="password" value={formData.password} placeholder="Введите ваш пароль" onChange={handleChange}/>
-                                { error !== '' && <span>{error}</span>}
+                                <div className={styles.passwordContainer} style={{ position: 'relative', display: 'inline-block', width: '100%' }}>
+                                    <input
+                                        type={showPassword ? 'text' : 'password'} // Переключение типа поля
+                                        className={error !== '' && formData.password === '' ? styles.error : ''}
+                                        name="password"
+                                        value={formData.password}
+                                        placeholder="Введите ваш пароль"
+                                        onChange={handleChange}
+                                        style={{
+                                            width: '100%',
+                                            padding: '8px',
+                                            paddingRight: '40px', // Добавляем отступ для иконки
+                                            boxSizing: 'border-box',
+                                        }}
+                                    />
+                                    {/* Иконка глаза */}
+                                    <span
+                                        style={{
+                                            position: 'absolute',
+                                            right: '10px',
+                                            top: '50%',
+                                            transform: 'translateY(-50%)',
+                                            cursor: 'pointer',
+                                        }}
+                                        onClick={() => setShowPassword(!showPassword)}
+                                    >
+                    {showPassword ? <MdVisibility height={20} width={20} color={'var(--primary)'}/> : <MdVisibilityOff height={20} width={20} color={'var(--primary)'}/>}
+                </span>
+                                </div>
                             </label>
                             <button type="submit">Войти</button>
 

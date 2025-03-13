@@ -9,6 +9,12 @@
   --primary: #3E70C7;
   --btn-hover: #9DC3E7;
   --err-primary: #F64E60;
+  --err-secondary: #FFB9C0;
+  --err-hover: #FFE3E6;
+  --success-primary: #17CB47;
+  --success-secondary: #D3FFD3;
+  --success-hover: #F2FFF2;
+
 }
 * {
   font-family: "Inter", sans-serif;
@@ -27,6 +33,10 @@ h1, h2, h3{
   color: var(--txt-primary);
   text-align: center;
   align-self: center;
+}
+
+button{
+  border: none;
 }
 
 .noSelect {
