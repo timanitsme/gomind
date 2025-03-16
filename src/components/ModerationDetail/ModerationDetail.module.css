@@ -1,0 +1,124 @@
+.detailContainer{
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.sideButton{
+    background: var(--primary);
+    display: flex;
+    align-items: center;
+    padding: 10px;
+    margin: 15px;
+    border-radius: 10px;
+    cursor: pointer;
+    height: fit-content;
+}
+
+
+.sideButton:hover{
+    background: var(--btn-hover);
+    transition: 0.5s;
+}
+
+.sideButton svg{
+    width: 30px;
+    height: 30px;
+}
+
+.detailContent{
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.buttonsRow{
+    display: flex;
+    gap: 10px;
+    background: var(--fg);
+    padding: 10px 15px;
+    border-radius: 10px;
+    width: fit-content;
+    align-self: center;
+}
+
+.buttonsRow button{
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    padding: 7px 15px;
+    font-weight: bold;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.buttonsRow button svg{
+    width: 10px;
+    height: 10px;
+}
+
+.buttonsRow .accept{
+    color: var(--success-primary);
+    background: var(--success-secondary);
+}
+
+.buttonsRow .accept:hover{
+    background: var(--success-hover);
+    transition: 0.5s;
+}
+
+.buttonsRow .decline{
+    color: var(--err-primary);
+    background: var(--err-secondary);
+}
+
+.buttonsRow .decline:hover{
+    background: var(--err-hover);
+    transition: 0.5s;
+}
+
+.itemCard{
+    max-width: 1000px;
+    padding: 15px;
+    background: var(--fg);
+    border-radius: 10px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.itemCard .cost {
+    font-weight: bold;
+    color: var(--primary);
+    text-align: left;
+}
+
+.imageWrapper {
+    width: calc(100%);
+    height: auto;
+    border-radius: 10px;
+    overflow: hidden;
+    background-color: var(--btn-secondary);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.imageWrapper img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.itemCard .title {
+    color: var(--txt-primary);
+    text-align: left;
+    font-weight: bold;
+}
+
+.itemCard .description {
+    color: var(--txt-secondary);
+    text-align: justify-all;
+    -webkit-box-orient: vertical;
+}

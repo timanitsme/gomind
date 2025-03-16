@@ -3,7 +3,7 @@ import {useEffect} from "react";
 import styles from "./TabsSection.module.css";
 
 
-export default function TabsSection({tabs}){
+export default function TabsSection({tabs, style="default"}){
     const navigate = useNavigate()
 
     const activeTab = tabs.find(tab => location.pathname.endsWith(tab.path))?.title || tabs[0].title;
@@ -19,7 +19,7 @@ export default function TabsSection({tabs}){
     }, [location, navigate, tabs]);
 
     return (
-        <div className={styles.innerLinksContainer}>
+        <div className={`${styles.innerLinksContainer} ${style === "outlined" ? styles.outlined: ''}`}>
             <div className={styles.innerLinks}>
                 {tabs.map(tab => {
                     return(

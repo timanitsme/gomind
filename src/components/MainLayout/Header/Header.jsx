@@ -82,6 +82,7 @@ export default function Header({children}){
                 dispatch(setCredentials({ isAuthorized: true }));
                 dispatch(setUserProfile(profileResponse.data));
             closeModal();
+            window.location.reload();
             }
         } catch (err) {
             console.log(`Ошибка авторизации ${err}`)

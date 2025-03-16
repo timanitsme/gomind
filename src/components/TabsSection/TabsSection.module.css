@@ -5,6 +5,10 @@
     border-radius: 15px;
 }
 
+.innerLinksContainer.outlined{
+    background: #f4f4f4;
+}
+
 .innerLinks{
     width: 100%;
     height: 50px;
@@ -14,6 +18,12 @@
     gap: 10px;
 }
 
+.innerLinksContainer.outlined .innerLinks{
+    background: var(--fg);
+    align-items: center;
+    border-radius: 10px;
+}
+
 .innerLink{
     background: var(--fg);
     padding: 8px;
@@ -21,6 +31,10 @@
     font-size: 1rem;
     font-weight: bold;
     cursor: pointer;
+}
+
+.innerLinksContainer.outlined .innerLink{
+    border-radius: 8px;
 }
 
 .innerLink.active{
@@ -39,4 +53,8 @@
     margin: 0 10px;
     background: var(--btn-secondary);
     align-self: center;
+}
+
+.innerLinksContainer.outlined .hrtLine{
+    background: #f4f4f4;
 }

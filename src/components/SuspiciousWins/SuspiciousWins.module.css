@@ -1,0 +1,54 @@
+.winsSection{
+    display: flex;
+    gap: 15px;
+    margin-top: 10px;
+}
+
+.gridContainer{
+    background: var(--fg);
+    width: 100%;
+}
+
+.options{
+    background: var(--fg);
+    padding: 15px;
+    border-radius: 10px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    height: fit-content;
+}
+
+.options input{
+    outline: none;
+    border: 2px solid var(--primary);
+    border-radius: 8px;
+    padding: 8px;
+}
+
+.options button{
+    background: var(--primary);
+    outline: none;
+    color: var(--fg);
+    border: none;
+    padding: 10px;
+    border-radius: 10px;
+    font-weight: bold;
+    align-self: center;
+    width: 200px;
+    cursor: pointer;
+
+}
+
+.options button:hover{
+    background: var(--btn-hover);
+    transition: 0.5s;
+}
+
+.header{
+    font-weight: bold;
+    color: var(--primary);
+    text-align: center;
+}
+
+

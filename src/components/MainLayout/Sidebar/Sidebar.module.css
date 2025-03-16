@@ -6,7 +6,7 @@
     background-color: var(--fg);
     color: white;
     transition: width 0.3s;
-    height: 100%;
+    height: 85vh;
     position: absolute;
     display: flex;
     flex-direction: column;

@@ -55,9 +55,30 @@ export const goMindApi = createApi({
                 return(`admin/all-users?${params.toString()}`)
             }
         })),
+        rejectAdvertisement: builder.mutation({
+            query: (adId) => {
+                return({
+                    url: `admin/reject-advertisement?adId=${adId}`,
+                    method: 'POST'
+                })
+            }
+        }),
+        approveAdvertisement: builder.mutation({
+            query: (adId) => {
+                return({
+                    url: `admin/approve-advertisement?adId=${adId}`,
+                    method: 'POST'
+                })
+            }
+        }),
         getAdvertisementsByCost: (builder.query({
             query: () => `quiz/advertisements-by-cost`
         })),
+        getSuspiciousWins: (builder.query({
+            query: ({limit}) =>{
+                return(`admin/suspicious-wins?limit=${limit.toString()}`)
+            }
+        }))
 
     })
 })
@@ -65,4 +86,4 @@ export const goMindApi = createApi({
 
 
 export const {useLoginMutation, useGetUserProfileQuery, useRefreshTokenMutation, useRefreshTokenCookieMutation,
-    useGetAllUsersQuery} = goMindApi
+    useGetAllUsersQuery, useGetAdvertisementsByCostQuery, useGetSuspiciousWinsQuery} = goMindApi
