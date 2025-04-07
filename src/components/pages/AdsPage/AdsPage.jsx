@@ -3,7 +3,9 @@ import {Outlet, useLocation, useParams} from "react-router-dom";
 
 export default function AdsPage(){
     const tabs = [
-        {title: "Модерация", path: 'moderate'},
+        {title: "Ожидают подтверждения", path: 'pending'},
+        {title: "Отклоненная реклама", path: 'rejected'},
+        {title: "Принятая реклама", path: 'approved'},
     ]
 
     const location = useLocation();

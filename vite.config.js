@@ -11,7 +11,7 @@ export default defineConfig({
     historyApiFallback: true,
     proxy: {
       '/api': {
-        target: 'http://158.160.138.117:8080',
+        target: 'https://www.gwork.press:8443',
         changeOrigin: true,
         rewrite: (path) => path.replace(/^\/api/, ''),
         secure: false,

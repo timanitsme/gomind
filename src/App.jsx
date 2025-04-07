@@ -31,7 +31,9 @@ function App() {
             {title: "Список пользователей", svg: FaHome, path: "usersList", element: <UsersList/>},
                 {title: "Добавить пользователя", svg: FaHome, path: "usersAdd", element: <AddingUsers/>}]},
         {title: "Реклама", svg: FaAd, path: "/ads", element: <AdsPage/>, children: [
-                {title: "Модерация", svg: FaAd, path: "moderate", element: <ModerationList/>},
+                {title: "Реклама", svg: FaAd, path: "pending", element: <ModerationList status="PENDING"/>},
+                {title: "Отклоненная реклама", svg: FaAd, path: "rejected", element: <ModerationList status="REJECTED"/>},
+                {title: "Подтвержденная реклама", svg: FaAd, path: "approved", element: <ModerationList status="APPROVED"/>},
                 {title: "Детальная страница рекламы", svg: FaAd, path: "ad/:id", element: <ModerationDetail/>}
             ]},
         {title: "Выигрыши", svg: FaRankingStar, path: "/wins", element: <WinsPage/>, children: [

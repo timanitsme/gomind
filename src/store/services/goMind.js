@@ -72,12 +72,18 @@ export const goMindApi = createApi({
             }
         }),
         getAdvertisementsByCost: (builder.query({
-            query: () => `quiz/advertisements-by-cost`
+            query: ({status}) => `advertisements/advertisements-by-cost?status=${status? status: "PENDING"}`
         })),
         getSuspiciousWins: (builder.query({
             query: ({limit}) =>{
                 return(`admin/suspicious-wins?limit=${limit.toString()}`)
             }
+        })),
+        GetFileSystemImageById: (builder.query({
+            query: ({fileDataId}) =>({
+                url: `user/file-system-image-by-id/${Number(fileDataId)}`,
+                responseHandler: (response) => response.blob()
+            })
         }))
 
     })
@@ -86,4 +92,5 @@ export const goMindApi = createApi({
 
 
 export const {useLoginMutation, useGetUserProfileQuery, useRefreshTokenMutation, useRefreshTokenCookieMutation,
-    useGetAllUsersQuery, useGetAdvertisementsByCostQuery, useGetSuspiciousWinsQuery} = goMindApi
+    useGetAllUsersQuery, useApproveAdvertisementMutation, useRejectAdvertisementMutation , useGetAdvertisementsByCostQuery,
+    useGetSuspiciousWinsQuery, useGetFileSystemImageByIdQuery} = goMindApi

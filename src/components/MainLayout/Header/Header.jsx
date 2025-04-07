@@ -114,7 +114,7 @@ export default function Header({children}){
                 {isAuthorized && !profileIsLoading &&
                     <>
                     <div className={styles.profileContainer} onClick={toggleMenu}>
-                        <h3 className="noSelect">{userProfile !== undefined && userProfile?.data?.nickname}</h3>
+                        <h3 className="noSelect">{userProfile !== undefined && userProfile?.nickname}</h3>
                     </div>
                     {menuVisible && (
                         <div className={styles.dropdownMenu}>

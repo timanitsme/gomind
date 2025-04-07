@@ -74,7 +74,7 @@ export default function UsersList(){
                         setPaginationModel(newModel);
                     }}
                     rowCount={users?.totalElements || 0}
-                    pageSizeOptions={[5, 10, 20]}
+                    pageSizeOptions={[1, 5, 10, 20]}
                     paginationMode="server"
                     onCellEditCommit={params=>setRowId(params.id)}
                     getRowStyle={() => ({
