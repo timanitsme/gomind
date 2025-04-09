@@ -161,8 +161,8 @@ export default function Header({children}){
                                         }}
                                         onClick={() => setShowPassword(!showPassword)}
                                     >
-                    {showPassword ? <MdVisibility height={20} width={20} color={'var(--primary)'}/> : <MdVisibilityOff height={20} width={20} color={'var(--primary)'}/>}
-                </span>
+                                        {showPassword ? <MdVisibility height={20} width={20} color={'var(--primary)'}/> : <MdVisibilityOff height={20} width={20} color={'var(--primary)'}/>}
+                                    </span>
                                 </div>
                             </label>
                             <button type="submit">Войти</button>

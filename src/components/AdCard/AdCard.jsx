@@ -1,15 +1,19 @@
-import {useGetFileSystemImageByIdQuery, useRejectAdvertisementMutation} from "../../store/services/goMind.js";
+import {
+    useApproveAdvertisementMutation,
+    useGetFileSystemImageByIdQuery,
+    useRejectAdvertisementMutation
+} from "../../store/services/goMind.js";
 import {useEffect, useState} from "react";
 import styles from "./AdCard.module.css";
 import {useNavigate} from "react-router-dom";
+import {toast} from "react-toastify";
 
-const AdCard = ({ card }) => {
+const AdCard = ({ card, onChange }) => {
     const { data: image, isLoading: imageIsLoading, error: imageError } = useGetFileSystemImageByIdQuery({ fileDataId: card.fileDataId });
     const [imageSrc, setImageSrc] = useState(null);
     const navigate = useNavigate()
-    const [rejectAdvertisement, {isLoading: rejectIsLoading, rejectError}] = useRejectAdvertisementMutation()
-    const [acceptAdvertisement, {isLoading: acceptIsLoading, error: acceptError}] = useRejectAdvertisementMutation()
-
+    const [rejectAdvertisement, {isLoading: rejectIsLoading, isError: rejectIsError, isSuccess: rejectIsSuccess}] = useRejectAdvertisementMutation()
+    const [acceptAdvertisement, {isLoading: acceptIsLoading, isError: acceptIsError, isSuccess: acceptIsSuccess}] = useApproveAdvertisementMutation()
 
     useEffect(() => {
         if (image && !imageIsLoading && !imageError) {
@@ -28,23 +32,27 @@ const AdCard = ({ card }) => {
         };
     }, [imageSrc]);
 
-    const handleReject = ({cardId}) => {
-        rejectAdvertisement({cardId: Number(cardId)})
+    const handleReject = (cardId) => {
+        rejectAdvertisement({ adId: cardId })
+            .unwrap()
             .then(() => {
-                console.log('Реклама отклонена успешно');
+                toast.success('Реклама успешно отклонена!');
+                if (onChange) onChange();
             })
             .catch((error) => {
-                console.error('Не удалось отклонить рекламу:', error);
+                toast.error('Не удалось отклонить рекламу.');
             });
     };
 
-    const handleAccept = ({cardId}) => {
-        acceptAdvertisement({cardId: Number(cardId)})
+    const handleAccept = (cardId) => {
+        acceptAdvertisement({ adId: cardId })
+            .unwrap()
             .then(() => {
-                console.log('Реклама принята успешно');
+                toast.success('Реклама успешно принята!');
+                if (onChange) onChange();
             })
             .catch((error) => {
-                console.error('Не удалось принять рекламу:', error);
+                toast.error('Не удалось принять рекламу.');
             });
     }
 
@@ -59,7 +67,7 @@ const AdCard = ({ card }) => {
             <p className={styles.description}>{card?.description}</p>
             <p className={styles.cost}>{card.cost} груш</p>
             <div className={styles.buttonsContainer}>
-                <button className={styles.error} onClick={(e) => {e.stopPropagation(); console.log(JSON.stringify(card));}}>Отклонить</button>
+                <button className={styles.error} onClick={(e) => {e.stopPropagation(); handleReject(card.id)}}>Отклонить</button>
                 <button className={styles.success} onClick={(e) => {e.stopPropagation(); handleAccept(card.id)}}>Принять</button>
             </div>
         </div>

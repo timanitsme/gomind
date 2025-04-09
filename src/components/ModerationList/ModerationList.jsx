@@ -13,10 +13,9 @@ import AdCard from "../AdCard/AdCard.jsx";
 
 
 
-export default function ModerationList({status = "PENDING"}){
+export default function ModerationList({status}){
     const navigate = useNavigate()
-
-    const {data: cards, isLoading: cardsIsLoading, error: cardsError} = useGetAdvertisementsByCostQuery(status)
+    const {data: cards, isLoading: cardsIsLoading, error: cardsError, refetch} = useGetAdvertisementsByCostQuery({status: status})
 
     /*const cards = [
         {title: "Маленькие пушистые радости: найди друга своей мечты!", description: "Ищете источник тепла, любви и позитива? Эти очаровательные котята готовы растопить ваше сердце своими мягкими лапками и игривым нравом. Каждый из них — уникальная личность с особым характером: кто-то станет вашим верным спутником в уютных вечерах, а кто-то превратит дом в настоящий игровой парк!", cost: 1200, filename: Kitten},
@@ -32,6 +31,10 @@ export default function ModerationList({status = "PENDING"}){
         {title: "Маленькие пушистые радости: найди друга своей мечты!", description: "Ищете источник тепла, любви и позитива? Эти очаровательные котята готовы растопить ваше сердце своими мягкими лапками и игривым нравом. Каждый из них — уникальная личность с особым характером: кто-то станет вашим верным спутником в уютных вечерах, а кто-то превратит дом в настоящий игровой парк!", cost: 1200, filename: Kitten},
         {title: "Канцтовары и школьные принадлежности с большими скидками!", description: "Успей купить пока не разобрали", cost: 360, filename: Pencil},
     ]*/
+
+    const handleAdsChange = () =>{
+        refetch()
+    }
 
     useEffect(() => {
         if (!cardsIsLoading && !cardsError){
@@ -50,7 +53,7 @@ export default function ModerationList({status = "PENDING"}){
             <div>
                 <div className={styles.cardsContainer}>
                     {cards.map((card) => (
-                        <AdCard key={card.id} card={card} />
+                        <AdCard key={card.id} card={card} onChange={handleAdsChange}/>
                     ))}
                 </div>
 

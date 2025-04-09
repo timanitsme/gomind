@@ -56,7 +56,7 @@ export const goMindApi = createApi({
             }
         })),
         rejectAdvertisement: builder.mutation({
-            query: (adId) => {
+            query: ({adId}) => {
                 return({
                     url: `admin/reject-advertisement?adId=${adId}`,
                     method: 'POST'
@@ -64,7 +64,7 @@ export const goMindApi = createApi({
             }
         }),
         approveAdvertisement: builder.mutation({
-            query: (adId) => {
+            query: ({adId}) => {
                 return({
                     url: `admin/approve-advertisement?adId=${adId}`,
                     method: 'POST'
@@ -72,19 +72,30 @@ export const goMindApi = createApi({
             }
         }),
         getAdvertisementsByCost: (builder.query({
-            query: ({status}) => `advertisements/advertisements-by-cost?status=${status? status: "PENDING"}`
+            query: ({status}) => `advertisements/advertisements-by-cost?status=${status}`
+        })),
+        getAdvertisementById: (builder.query({
+            query: ({id}) => `advertisements/get-by-id/${id}`
         })),
         getSuspiciousWins: (builder.query({
             query: ({limit}) =>{
                 return(`admin/suspicious-wins?limit=${limit.toString()}`)
             }
         })),
-        GetFileSystemImageById: (builder.query({
+        getFileSystemImageById: (builder.query({
             query: ({fileDataId}) =>({
-                url: `user/file-system-image-by-id/${Number(fileDataId)}`,
+                url: `files/file-system-image-by-id/${Number(fileDataId)}`,
                 responseHandler: (response) => response.blob()
             })
-        }))
+        })),
+        catchPears: builder.mutation({
+            query: ({userId, pearsCaught}) => {
+                return({
+                    url: `user/catch-pear?userId=${userId}&pearsCaught=${pearsCaught}`,
+                    method: 'POST'
+                })
+            }
+        }),
 
     })
 })
@@ -93,4 +104,5 @@ export const goMindApi = createApi({
 
 export const {useLoginMutation, useGetUserProfileQuery, useRefreshTokenMutation, useRefreshTokenCookieMutation,
     useGetAllUsersQuery, useApproveAdvertisementMutation, useRejectAdvertisementMutation , useGetAdvertisementsByCostQuery,
-    useGetSuspiciousWinsQuery, useGetFileSystemImageByIdQuery} = goMindApi
+    useGetSuspiciousWinsQuery, useGetFileSystemImageByIdQuery, useGetAdvertisementByIdQuery,
+    useCatchPearsMutation} = goMindApi
