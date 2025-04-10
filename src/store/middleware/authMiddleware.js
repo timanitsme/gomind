@@ -24,6 +24,7 @@ const authMiddleware = ({ dispatch }) => (next) => async (action) => {
                 if (originalRequest) {
                     return dispatch(originalRequest);
                 }
+                window.location.reload();
             } catch (error) {
                 console.error('Ошибка при обновлении токена:', error);
                 dispatch(logout()); // Выходим из системы, если обновление не удалось

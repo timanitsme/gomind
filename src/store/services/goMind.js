@@ -96,7 +96,25 @@ export const goMindApi = createApi({
                 })
             }
         }),
-
+        getWithdrawals: (builder.query({
+            query: ({status}) => `admin/withdrawals?status=${status}`
+        })),
+        approveWithdrawal: builder.mutation({
+            query: ({requestId}) => {
+                return({
+                    url: `admin/withdrawals/approve?requestId=${requestId}`,
+                    method: 'POST'
+                })
+            }
+        }),
+        rejectWithdrawal: builder.mutation({
+            query: ({requestId}) => {
+                return({
+                    url: `admin/withdrawals/reject?requestId=${requestId}`,
+                    method: 'POST'
+                })
+            }
+        }),
     })
 })
 
@@ -105,4 +123,4 @@ export const goMindApi = createApi({
 export const {useLoginMutation, useGetUserProfileQuery, useRefreshTokenMutation, useRefreshTokenCookieMutation,
     useGetAllUsersQuery, useApproveAdvertisementMutation, useRejectAdvertisementMutation , useGetAdvertisementsByCostQuery,
     useGetSuspiciousWinsQuery, useGetFileSystemImageByIdQuery, useGetAdvertisementByIdQuery,
-    useCatchPearsMutation} = goMindApi
+    useCatchPearsMutation, useGetWithdrawalsQuery, useApproveWithdrawalMutation, useRejectWithdrawalMutation} = goMindApi

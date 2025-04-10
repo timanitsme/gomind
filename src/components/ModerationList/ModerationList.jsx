@@ -15,37 +15,27 @@ import AdCard from "../AdCard/AdCard.jsx";
 
 export default function ModerationList({status}){
     const navigate = useNavigate()
-    const {data: cards, isLoading: cardsIsLoading, error: cardsError, refetch} = useGetAdvertisementsByCostQuery({status: status})
-
-    /*const cards = [
-        {title: "Маленькие пушистые радости: найди друга своей мечты!", description: "Ищете источник тепла, любви и позитива? Эти очаровательные котята готовы растопить ваше сердце своими мягкими лапками и игривым нравом. Каждый из них — уникальная личность с особым характером: кто-то станет вашим верным спутником в уютных вечерах, а кто-то превратит дом в настоящий игровой парк!", cost: 1200, filename: Kitten},
-        {title: "Канцтовары и школьные принадлежности с большими скидками!", description: "Успей купить пока не разобрали", cost: 360, filename: Pencil},
-        {title: "Маленькие пушистые радости: найди друга своей мечты!", description: "Ищете источник тепла, любви и позитива? Эти очаровательные котята готовы растопить ваше сердце своими мягкими лапками и игривым нравом. Каждый из них — уникальная личность с особым характером: кто-то станет вашим верным спутником в уютных вечерах, а кто-то превратит дом в настоящий игровой парк!", cost: 1200, filename: Kitten},
-        {title: "Канцтовары и школьные принадлежности с большими скидками!", description: "Успей купить пока не разобрали", cost: 360, filename: Pencil},
-        {title: "Маленькие пушистые радости: найди друга своей мечты!", description: "Ищете источник тепла, любви и позитива? Эти очаровательные котята готовы растопить ваше сердце своими мягкими лапками и игривым нравом. Каждый из них — уникальная личность с особым характером: кто-то станет вашим верным спутником в уютных вечерах, а кто-то превратит дом в настоящий игровой парк!", cost: 1200, filename: Kitten},
-        {title: "Канцтовары и школьные принадлежности с большими скидками!", description: "Успей купить пока не разобрали", cost: 360, filename: Pencil},
-        {title: "Маленькие пушистые радости: найди друга своей мечты!", description: "Ищете источник тепла, любви и позитива? Эти очаровательные котята готовы растопить ваше сердце своими мягкими лапками и игривым нравом. Каждый из них — уникальная личность с особым характером: кто-то станет вашим верным спутником в уютных вечерах, а кто-то превратит дом в настоящий игровой парк!", cost: 1200, filename: Kitten},
-        {title: "Канцтовары и школьные принадлежности с большими скидками!", description: "Успей купить пока не разобрали", cost: 360, filename: Pencil},
-        {title: "Маленькие пушистые радости: найди друга своей мечты!", description: "Ищете источник тепла, любви и позитива? Эти очаровательные котята готовы растопить ваше сердце своими мягкими лапками и игривым нравом. Каждый из них — уникальная личность с особым характером: кто-то станет вашим верным спутником в уютных вечерах, а кто-то превратит дом в настоящий игровой парк!", cost: 1200, filename: Kitten},
-        {title: "Канцтовары и школьные принадлежности с большими скидками!", description: "Успей купить пока не разобрали", cost: 360, filename: Pencil},
-        {title: "Маленькие пушистые радости: найди друга своей мечты!", description: "Ищете источник тепла, любви и позитива? Эти очаровательные котята готовы растопить ваше сердце своими мягкими лапками и игривым нравом. Каждый из них — уникальная личность с особым характером: кто-то станет вашим верным спутником в уютных вечерах, а кто-то превратит дом в настоящий игровой парк!", cost: 1200, filename: Kitten},
-        {title: "Канцтовары и школьные принадлежности с большими скидками!", description: "Успей купить пока не разобрали", cost: 360, filename: Pencil},
-    ]*/
+    const {data: cards, isLoading: cardsIsLoading, error: cardsError, refetch} = useGetAdvertisementsByCostQuery({status: status}, { forceRefetch: true, refetchOnMountOrArgChange: true })
 
     const handleAdsChange = () =>{
         refetch()
     }
 
     useEffect(() => {
-        if (!cardsIsLoading && !cardsError){
-            console.log(cards)
-        }
-    }, [cardsIsLoading, cardsError, cards]);
+        refetch();
+    }, [status, refetch]);
 
     if (cardsIsLoading){
-        return <CircularProgress></CircularProgress>
+        return <div className={styles.centerContainer}><div className={styles.center}><CircularProgress></CircularProgress></div></div>
     }
 
+    if (!cardsIsLoading && !cardsError && cards?.length === 0){
+        return (
+            <div className={styles.centerContainer}>
+                <div className={styles.center}><p>Нет доступных заявок</p></div>
+            </div>
+        )
+    }
 
 
     if (!cardsIsLoading && !cardsError){
