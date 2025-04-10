@@ -18,6 +18,8 @@ export default function WithdrawalList({status}){
         refetch()
     }
 
+
+
     useEffect(() => {
         console.log(`isLoading: ${cardsIsLoading}`)
     }, [cardsIsLoading]);

@@ -78,7 +78,6 @@ export default function Header({children}){
         try {
             const response = await login(formData).unwrap();
             const profileResponse = await dispatch(goMindApi.endpoints.getUserProfile.initiate());
-            console.log(`response and profileResponse: ${response && profileResponse.data}`)
             if (profileResponse.data && response) {
                 dispatch(setCredentials({ isAuthorized: true }));
                 dispatch(setUserProfile(profileResponse.data));
@@ -86,7 +85,6 @@ export default function Header({children}){
                 window.location.reload();
             }
         } catch (err) {
-            console.log(`Ошибка авторизации ${err}`)
             setError('Неверный email или пароль');
         }
     }

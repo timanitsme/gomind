@@ -108,9 +108,9 @@ export const goMindApi = createApi({
             }
         }),
         rejectWithdrawal: builder.mutation({
-            query: ({requestId}) => {
+            query: ({requestId, reason}) => {
                 return({
-                    url: `admin/withdrawals/reject?requestId=${requestId}`,
+                    url: `admin/withdrawals/reject?requestId=${requestId}&reason=${reason}`,
                     method: 'POST'
                 })
             }
