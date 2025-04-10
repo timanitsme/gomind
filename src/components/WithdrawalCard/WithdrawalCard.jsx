@@ -50,15 +50,17 @@ const WithdrawalCard = ({ card, onChange }) => {
 
     return (
         <div>
-            <div key={card?.id} onClick={() => navigate(`/ads/ad/${card?.id}`)} className={styles.adCard}>
+            <div key={card?.id} onClick={() => {} } className={styles.adCard}>
                 <p className={styles.title}>{card?.username}</p>
                 {card?.paymentDetails && <p className={styles.secondary}>Детали платежа: {card?.paymentDetails}</p>}
                 {card?.amount && <p className={styles.secondary}>Количество: {card?.amount}</p>}
                 {card?.rejectionReason && <p className={styles.secondary}>Причина отклонения: {card?.rejectionReason}</p>}
-                <div className={styles.buttonsContainer}>
-                    <button className={styles.error} onClick={(e) => {e.stopPropagation(); showRejectionModal()}}>Отклонить</button>
-                    <button className={styles.success} onClick={(e) => {e.stopPropagation(); handleAccept(card.id)}}>Принять</button>
-                </div>
+                {card?.status === "PENDING" &&
+                    <div className={styles.buttonsContainer}>
+                        <button className={styles.error} onClick={(e) => {e.stopPropagation(); showRejectionModal()}}>Отклонить</button>
+                        <button className={styles.success} onClick={(e) => {e.stopPropagation(); handleAccept(card.id)}}>Принять</button>
+                    </div>
+                }
             </div>
             {/*handleReject(card.id)*/}
             <SimpleModal title="Отклонить заявку" setShow={setModalShow} show={modalShow}>
