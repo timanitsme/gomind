@@ -4,21 +4,39 @@ import svgr from "vite-plugin-svgr"
 
 // https://vite.dev/config/
 export default defineConfig({
+  base: '/admin/',
   plugins: [react(), svgr()],
   server: {
-    host: 'localhost',
+    host: '0.0.0.0',
     port: 4200,
     historyApiFallback: true,
     proxy: {
-      '/api': {
+      '/authentication': {
         target: 'https://www.gwork.press:8443',
         changeOrigin: true,
-        rewrite: (path) => path.replace(/^\/api/, ''),
+        secure: false,
+        rewrite: (path) => path.replace(/^\/authentication/, '/authentication'),
+        headers: {
+          'Access-Control-Allow-Origin': '*',
+        }
+      },
+      '/user': {
+        target: 'https://www.gwork.press:8443',
+        changeOrigin: true,
         secure: false,
         headers: {
-          'Access-Control-Allow-Origin': 'http://localhost:4200',
-        },
+          'Access-Control-Allow-Origin': '*',
+        }
       },
+      '/admin': {
+        target: 'https://www.gwork.press:8443',
+        changeOrigin: true,
+        secure: false,
+        headers: {
+          'Access-Control-Allow-Origin': '*',
+        }
+      }
     }
   }
 })
+

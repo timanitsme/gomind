@@ -1,5 +1,5 @@
 import { createSlice } from '@reduxjs/toolkit';
-import {goMindApi} from "./goMind.js";
+import { goMindApi } from "./goMind.js";
 
 const initialState = {
     isAuthorized: false,
@@ -14,13 +14,18 @@ const authSlice = createSlice({
     reducers: {
         setCredentials: (state, action) => {
             state.isAuthorized = true;
+            const { accessToken, refreshToken } = action.payload;
+
+            // Сохранение токенов в куки
+            document.cookie = `jwt-cookie=${accessToken}; path=/; max-age=2592000; Secure; HttpOnly; SameSite=None`;
+            document.cookie = `refresh-jwt-cookie=${refreshToken}; path=/; max-age=2592000; Secure; HttpOnly; SameSite=None`;
         },
         logout: (state) => {
             state.isAuthorized = false;
             state.userProfile = null;
             // Удаление токенов из куки
-            document.cookie = `jwt-cookie=; path=/; max-age=0`;
-            document.cookie = `refresh-jwt-cookie=; path=/; max-age=0`;
+            document.cookie = `jwt-cookie=; path=/; max-age=0; Secure; HttpOnly; SameSite=None`;
+            document.cookie = `refresh-jwt-cookie=; path=/; max-age=0; Secure; HttpOnly; SameSite=None`;
         },
         setUserProfile: (state, action) => {
             state.userProfile = action.payload;
@@ -37,12 +42,13 @@ const authSlice = createSlice({
 export const { setCredentials, logout, setUserProfile, setIsLoading, setError } = authSlice.actions;
 
 export const initializeAuthState = () => async (dispatch) => {
-    dispatch(setIsLoading(true))
+    dispatch(setIsLoading(true));
     try {
         const response = await dispatch(goMindApi.endpoints.getUserProfile.initiate());
         if (response.data) {
-            console.log("initializeAuthState: You are authorized!")
-            dispatch(setCredentials({ isAuthorized: true }));
+            console.log("initializeAuthState: You are authorized!");
+            const { accessToken, refreshToken } = response.data; // Получите токены
+            dispatch(setCredentials({ accessToken, refreshToken })); // Передайте токены в state
             dispatch(setUserProfile(response.data));
         } else {
             dispatch(logout());
@@ -51,8 +57,9 @@ export const initializeAuthState = () => async (dispatch) => {
         console.error('Ошибка при проверке сессии:', error);
         dispatch(logout());
     } finally {
-        dispatch(setIsLoading(false))
+        dispatch(setIsLoading(false));
     }
 };
 
 export default authSlice.reducer;
+
