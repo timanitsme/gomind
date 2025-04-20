@@ -18,6 +18,7 @@ export const goMindApi = createApi({
                 return response.text();
             }
         },
+        credentials: 'include',
     }),
     endpoints: (builder) => ({
         login: builder.mutation({
@@ -72,7 +73,7 @@ export const goMindApi = createApi({
             }
         }),
         getAdvertisementsByCost: (builder.query({
-            query: ({status}) => `advertisements/advertisements-by-cost?status=${status}`
+            query: ({status}) => `advertisements/advertisements-by-moderation-status?status=${status}`
         })),
         getAdvertisementById: (builder.query({
             query: ({id}) => `advertisements/get-by-id/${id}`

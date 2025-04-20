@@ -52,7 +52,7 @@ const WithdrawalCard = ({ card, onChange }) => {
         <div>
             <div key={card?.id} onClick={() => {} } className={styles.adCard}>
                 <p className={styles.title}>{card?.username}</p>
-                {card?.paymentDetails && <p className={styles.secondary}>Детали платежа: {card?.paymentDetails}</p>}
+                {card?.paymentDetails && <p className={styles.secondary}>Реквизиты: {card?.paymentDetails}</p>}
                 {card?.amount && <p className={styles.secondary}>Количество: {card?.amount}</p>}
                 {card?.rejectionReason && <p className={styles.secondary}>Причина отклонения: {card?.rejectionReason}</p>}
                 {card?.status === "PENDING" &&

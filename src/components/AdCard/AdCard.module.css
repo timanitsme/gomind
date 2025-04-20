@@ -149,3 +149,19 @@
 .authForm input.error{
     border: 2px solid var(--err-primary);
 }
+
+.linkButton{
+    background: var(--primary);
+    padding: 3.5px 15px !important;
+}
+
+.linkButton:hover{
+    background: var(--btn-hover);
+    transition: 0.5s;
+}
+
+.linkButton svg{
+    width: 20px;
+    height: min-content;
+    color: var(--fg);
+}

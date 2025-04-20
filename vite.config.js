@@ -4,9 +4,10 @@ import svgr from "vite-plugin-svgr"
 
 // https://vite.dev/config/
 export default defineConfig({
+  base: '/admin/',
   plugins: [react(), svgr()],
   server: {
-    host: 'localhost',
+    host: '0.0.0.0',
     port: 4200,
     historyApiFallback: true,
     proxy: {
@@ -16,7 +17,7 @@ export default defineConfig({
         rewrite: (path) => path.replace(/^\/api/, ''),
         secure: false,
         headers: {
-          'Access-Control-Allow-Origin': 'http://localhost:4200',
+          'Access-Control-Allow-Origin': '*',
         },
       },
     }

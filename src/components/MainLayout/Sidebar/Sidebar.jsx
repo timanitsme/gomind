@@ -15,8 +15,8 @@ export default function Sidebar({paths}){
         // Убираем завершающий слэш из переданного пути и текущего URL
         const normalizedPath = path.replace(/\/$/, ""); // Убираем завершающий слэш у переданного пути
 
-        if (normalizedPath === "") {
-            return currentPath === "";
+        if (normalizedPath === "" || normalizedPath === "/admin") {
+            return currentPath === "/admin";
         }
         // Проверяем, начинается ли текущий URL с переданного пути
         return currentPath.startsWith(normalizedPath);

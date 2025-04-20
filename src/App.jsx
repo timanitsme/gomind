@@ -28,21 +28,21 @@ function App() {
     }, [dispatch]);
 
     const paths = [
-        {title: "Главная", svg: FaHome, path: "/", element: <HomePage/>},
-        {title: "Пользователи", svg: FaUser, path: "/users", element: <UsersPage/>, children: [
+        {title: "Главная", svg: FaHome, path: "/admin/", element: <HomePage/>},
+        {title: "Пользователи", svg: FaUser, path: "/admin/users", element: <UsersPage/>, children: [
             {title: "Список пользователей", svg: FaHome, path: "usersList", element: <UsersList/>},
                 {title: "Добавить пользователя", svg: FaHome, path: "usersAdd", element: <AddingUsers/>}]},
-        {title: "Реклама", svg: FaAd, path: "/ads", element: <AdsPage/>, children: [
+        {title: "Реклама", svg: FaAd, path: "/admin/ads", element: <AdsPage/>, children: [
                 {title: "Реклама", svg: FaAd, path: "pending", element: <ModerationList status="PENDING"/>},
                 {title: "Отклоненная реклама", svg: FaAd, path: "rejected", element: <ModerationList status="REJECTED"/>},
                 {title: "Подтвержденная реклама", svg: FaAd, path: "approved", element: <ModerationList status="APPROVED"/>},
                 {title: "Детальная страница рекламы", svg: FaAd, path: "ad/:id", element: <ModerationDetail/>}
             ]},
-        {title: "Выигрыши", svg: FaRankingStar, path: "/wins", element: <WinsPage/>, children: [
+        {title: "Выигрыши", svg: FaRankingStar, path: "/admin/wins", element: <WinsPage/>, children: [
                 {title: "Подозрительные выигрыши", svg: FaRankingStar, path: "suspicious", element: <SuspiciousWins/>}
             ]},
         {
-            title: "Вывод", svg: FaCoins, path: "/withdrawals", element: <WithdrawalPage/>, children: [
+            title: "Вывод", svg: FaCoins, path: "/admin/withdrawals", element: <WithdrawalPage/>, children: [
                 {title: "Заявки на вывод", svg: FaAd, path: "pending", element: <WithdrawalList status="PENDING"/>},
                 {title: "Отклоненные заявки", svg: FaAd, path: "rejected", element: <WithdrawalList status="REJECTED"/>},
                 {title: "Подтвержденные заявки", svg: FaAd, path: "approved", element: <WithdrawalList status="APPROVED"/>},

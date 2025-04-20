@@ -122,3 +122,19 @@
     text-align: justify-all;
     -webkit-box-orient: vertical;
 }
+
+.linkButton{
+    background: var(--primary);
+    padding: 3.5px 15px !important;
+}
+
+.linkButton:hover{
+    background: var(--btn-hover);
+    transition: 0.5s;
+}
+
+.linkButton svg{
+    width: 20px !important;
+    height: 20px !important;
+    color: var(--fg);
+}

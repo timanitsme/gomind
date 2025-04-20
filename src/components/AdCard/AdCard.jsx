@@ -7,6 +7,7 @@ import {useEffect, useState} from "react";
 import styles from "./AdCard.module.css";
 import {useNavigate} from "react-router-dom";
 import {toast} from "react-toastify";
+import {IoMdLink} from "react-icons/io";
 
 const AdCard = ({ card, onChange }) => {
     const { data: image, isLoading: imageIsLoading, error: imageError } = useGetFileSystemImageByIdQuery({ fileDataId: card.fileDataId });
@@ -57,7 +58,7 @@ const AdCard = ({ card, onChange }) => {
     }
 
     return (
-        <div key={card.id} onClick={() => navigate(`/ads/ad/${card.id}`)} className={styles.adCard}>
+        <div key={card.id} onClick={() => navigate(`/admin/ads/ad/${card.id}`)} className={styles.adCard}>
             <div className={styles.imageWrapper}>
                 {imageIsLoading && <div>Загрузка изображения...</div>}
                 {imageError && <div>Ошибка загрузки изображения</div>}
@@ -68,6 +69,7 @@ const AdCard = ({ card, onChange }) => {
             <p className={styles.cost}>{card.cost} груш</p>
             <div className={styles.buttonsContainer}>
                 <button className={styles.error} onClick={(e) => {e.stopPropagation(); handleReject(card.id)}}>Отклонить</button>
+                <button className={styles.linkButton} onClick={(e) => {e.stopPropagation(); window.location.href=card?.link}}><IoMdLink/></button>
                 <button className={styles.success} onClick={(e) => {e.stopPropagation(); handleAccept(card.id)}}>Принять</button>
             </div>
         </div>
