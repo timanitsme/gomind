@@ -11,32 +11,15 @@ export default defineConfig({
     port: 4200,
     historyApiFallback: true,
     proxy: {
-      '/authentication': {
+      '/api': {
         target: 'https://www.gwork.press:8443',
         changeOrigin: true,
+        rewrite: (path) => path.replace(/^\/api/, ''),
         secure: false,
-        rewrite: (path) => path.replace(/^\/authentication/, '/authentication'),
         headers: {
           'Access-Control-Allow-Origin': '*',
-        }
+        },
       },
-      '/user': {
-        target: 'https://www.gwork.press:8443',
-        changeOrigin: true,
-        secure: false,
-        headers: {
-          'Access-Control-Allow-Origin': '*',
-        }
-      },
-      '/admin': {
-        target: 'https://www.gwork.press:8443',
-        changeOrigin: true,
-        secure: false,
-        headers: {
-          'Access-Control-Allow-Origin': '*',
-        }
-      }
     }
   }
 })
-

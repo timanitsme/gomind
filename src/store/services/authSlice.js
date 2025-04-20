@@ -14,8 +14,7 @@ const authSlice = createSlice({
     reducers: {
         setCredentials: (state, action) => {
             state.isAuthorized = true;
-            const { accessToken, refreshToken } = action.payload;
-
+            const {accessToken, refreshToken} = action.payload;
             // Сохранение токенов в куки
             document.cookie = `jwt-cookie=${accessToken}; path=/; max-age=2592000; Secure; HttpOnly; SameSite=None`;
             document.cookie = `refresh-jwt-cookie=${refreshToken}; path=/; max-age=2592000; Secure; HttpOnly; SameSite=None`;
@@ -42,13 +41,13 @@ const authSlice = createSlice({
 export const { setCredentials, logout, setUserProfile, setIsLoading, setError } = authSlice.actions;
 
 export const initializeAuthState = () => async (dispatch) => {
-    dispatch(setIsLoading(true));
+    dispatch(setIsLoading(true))
     try {
         const response = await dispatch(goMindApi.endpoints.getUserProfile.initiate());
         if (response.data) {
-            console.log("initializeAuthState: You are authorized!");
-            const { accessToken, refreshToken } = response.data; // Получите токены
-            dispatch(setCredentials({ accessToken, refreshToken })); // Передайте токены в state
+            console.log("initializeAuthState: You are authorized!")
+            const { accessToken, refreshToken } = response.data;
+            dispatch(setCredentials({ accessToken, refreshToken }));
             dispatch(setUserProfile(response.data));
         } else {
             dispatch(logout());
@@ -57,9 +56,8 @@ export const initializeAuthState = () => async (dispatch) => {
         console.error('Ошибка при проверке сессии:', error);
         dispatch(logout());
     } finally {
-        dispatch(setIsLoading(false));
+        dispatch(setIsLoading(false))
     }
 };
 
 export default authSlice.reducer;
-

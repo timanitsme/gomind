@@ -10,7 +10,7 @@ export default function AdsPage(){
 
     const location = useLocation();
     const params = useParams();
-    const isDetailPath = location.pathname.startsWith('/ads/ad/') && params.id;
+    const isDetailPath = location.pathname.startsWith('/admin/ads/ad/') && params.id;
 
     return(
         <>

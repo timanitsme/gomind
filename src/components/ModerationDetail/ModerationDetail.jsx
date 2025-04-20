@@ -13,6 +13,7 @@ import {
 } from "../../store/services/goMind.js";
 import {useEffect, useState} from "react";
 import {toast} from "react-toastify";
+import {IoMdLink} from "react-icons/io";
 
 export default function ModerationDetail(){
     const [rejectAdvertisement, {isLoading: rejectIsLoading, isError: rejectIsError, isSuccess: rejectIsSuccess}] = useRejectAdvertisementMutation()
@@ -78,11 +79,13 @@ export default function ModerationDetail(){
                             <img src={imageSrc} alt=""/>
                         </div>
                         <p className={styles.title}>{card.title}</p>
+                        <p className={styles.title}>{card.nickname}</p>
                         <p className={styles.description}>{card.description}</p>
                         <p className={styles.cost}>{card.cost} груш</p>
                     </div>
                     <div className={styles.buttonsRow}>
                         <button className={styles.decline} onClick={handleReject}><CgClose/>Отклонить</button>
+                        <button className={styles.linkButton} onClick={(e) => {e.stopPropagation(); window.location.href=card?.link}}><IoMdLink/></button>
                         <button className={styles.accept} onClick={handleAccept}><FaCheck/>Принять</button>
                     </div>
                 </div>
