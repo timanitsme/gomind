@@ -3,7 +3,7 @@ import goMindLogo from "../../../assets/goMindLogo.svg"
 import {useEffect, useState} from "react";
 import {goMindApi, useLoginMutation} from "../../../store/services/goMind.js";
 import {useDispatch, useSelector} from "react-redux";
-import {logout, setCredentials, setUserProfile} from "../../../store/services/authSlice.js";
+import {logout, setUserProfile} from "../../../store/services/authSlice.js";
 import {MdVisibility, MdVisibilityOff} from "react-icons/md";
 
 export default function Header({children}){
@@ -79,13 +79,13 @@ export default function Header({children}){
             const response = await login(formData).unwrap();
             const profileResponse = await dispatch(goMindApi.endpoints.getUserProfile.initiate());
             if (profileResponse.data && response) {
-                dispatch(setCredentials({ isAuthorized: true }));
-                dispatch(setUserProfile(profileResponse.data));
+                await dispatch(setUserProfile(profileResponse.data));
                 closeModal();
                 window.location.reload();
             }
         } catch (err) {
             setError('Неверный email или пароль');
+            dispatch(logout());
         }
     }
     useEffect(() => {

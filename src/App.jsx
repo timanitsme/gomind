@@ -17,11 +17,13 @@ import WinsPage from "./components/pages/WinsPage/WinsPage.jsx";
 import SuspiciousWins from "./components/SuspiciousWins/SuspiciousWins.jsx";
 import WithdrawalPage from "./components/pages/WithdrawalPage/WithdrawalPage.jsx";
 import WithdrawalList from "./components/WithdrawalList/WithdrawalList.jsx";
+import useAuth from "./utils/customHooks/useAuth.js";
 
 
 
 function App() {
     const dispatch = useDispatch();
+    const {isAuthorized, userProfile, isLoading, error} = useAuth()
 
     useEffect(() => {
         dispatch(initializeAuthState());

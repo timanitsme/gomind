@@ -1,47 +1,62 @@
 import {logout, setCredentials} from "../services/authSlice.js";
 import {goMindApi} from "../services/goMind.js";
+import {isRejectedWithValue} from "@reduxjs/toolkit/react";
+import getRefreshToken from "../utils/tokenUtils/getRefreshToken.js";
 
 let isRefreshing = false;
 let refreshAttempts = 0;
+const MAX_REFRESH_ATTEMPTS = 3;
 
-const authMiddleware = ({ dispatch }) => (next) => async (action) => {
-    console.log(`action rejected ${action.type.endsWith('/rejected')}`)
+export const authMiddleware =
+    ({ dispatch }) =>
+        (next) =>
+            async (action) => {
+                if (isRejectedWithValue(action) && action.payload?.status === 403) {
+                    if (action.meta?.arg?.endpointName === 'refreshTokenCookie') {
+                        return next(action);
+                    }
 
-    // Проверяем, является ли действие ошибкой API
-    if (action.type && typeof action.type === 'string' && action.type.endsWith('/rejected')) {
-        const errorStatus = action.error?.status || action.payload?.status;
+                    if (!isRefreshing && refreshAttempts < MAX_REFRESH_ATTEMPTS) {
+                        isRefreshing = true;
+                        console.log("Trying to refresh")
+                        try {
+                            // Попытка обновить токен
+                            const refreshResult = await dispatch(goMindApi.endpoints.refreshTokenCookie.initiate());
+                            if (refreshResult.data) {
+                                console.log('Refresh successful:', refreshResult.data);
+                                await dispatch(setCredentials(refreshResult.data));
+                                console.log('Action:', JSON.stringify(action));
+                                if (action.meta?.arg) {
+                                    console.log('Action meta arg:', JSON.stringify(action.meta.arg));
+                                    const { endpointName, originalArgs } = action.meta.arg;
+                                    return dispatch(goMindApi.endpoints[endpointName].initiate(originalArgs || {}, { forceRefetch: true }));
+                                } else {
+                                    console.warn('Original arguments are not available');
+                                    return next(action);
+                                }
+                            }
+                        } catch (error) {
+                            console.error(`refresh error: ${error}`)
+                            await dispatch(logout())
 
-        // Если ошибка 403 (Forbidden), пробуем обновить токен
-        if (errorStatus === 403  && !isRefreshing && refreshAttempts < 3) {
-            try {
-                isRefreshing = true;
-                refreshAttempts++;
-                await dispatch(goMindApi.endpoints.refreshTokenCookie.initiate());
-                dispatch(setCredentials({ isAuthorized: true }));
-
-                // Повторяем исходный запрос
-                const originalRequest = action.meta?.baseQueryMeta?.request;
-                if (originalRequest) {
-                    return dispatch(originalRequest);
+                        } finally {
+                            isRefreshing = false;
+                        }
+                    } else {
+                        // Ждём завершения обновления токена
+                        await new Promise((resolve) => setTimeout(resolve, 1000));
+                        if (action.meta?.arg) {
+                            console.log('Action meta arg:', JSON.stringify(action.meta.arg));
+                            const { endpointName, originalArgs } = action.meta.arg;
+                            return dispatch(goMindApi.endpoints[endpointName].initiate(originalArgs || {}, { forceRefetch: true }));
+                        } else {
+                            console.warn('Original arguments are not available');
+                            return next(action);
+                        }
+                    }
                 }
-                window.location.reload();
-            } catch (error) {
-                console.error('Ошибка при обновлении токена:', error);
-                dispatch(logout()); // Выходим из системы, если обновление не удалось
-                return;
-            }
-            finally {
-                isRefreshing = false;
-                refreshAttempts = 0;
-            }
-        }
-        else if (refreshAttempts >= 3) {
-            console.error("Превышено количество попыток обновления токена");
-            dispatch(logout());
-        }
-    }
 
-    return next(action);
-};
+                return next(action);
+            };
 
 export default authMiddleware;

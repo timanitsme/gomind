@@ -1,25 +1,31 @@
 import {createApi, fetchBaseQuery} from "@reduxjs/toolkit/query/react";
 
 
+const baseQuery = fetchBaseQuery({
+    baseUrl: '/api',
+    prepareHeaders: (headers) => {
+        /*const token = getAccessToken();
+        if (token) {
+            headers.set('Authorization', `BEARER ${token}`);
+        }*/
+        headers.set('Content-Type', 'application/json');
+        return headers;
+    },
+    responseHandler: async (response) => {
+        const contentType = response.headers.get('content-type');
+        if (contentType && contentType.includes('application/json')){
+            return response.json();
+        }
+        else{
+            return response.text();
+        }
+    },
+    credentials: 'include',
+})
+
 export const goMindApi = createApi({
     reducerPath: "goMindApi",
-    baseQuery: fetchBaseQuery({
-        baseUrl: "/api",
-        prepareHeaders: (headers) => {
-            headers.set('Content-Type', 'application/json');
-            return headers
-        },
-        responseHandler: async (response) => {
-            const contentType = response.headers.get('content-type');
-            if (contentType && contentType.includes('application/json')){
-                return response.json();
-            }
-            else{
-                return response.text();
-            }
-        },
-        credentials: 'include',
-    }),
+    baseQuery: baseQuery,
     endpoints: (builder) => ({
         login: builder.mutation({
             query: (credentials) => {
@@ -44,6 +50,14 @@ export const goMindApi = createApi({
             query: () => {
                 return({
                     url: 'authentication/refresh-token-cookie',
+                    method: "POST"
+                })
+            }
+        }),
+        logout: builder.mutation({
+            query: () => {
+                return({
+                    url: 'authentication/logout',
                     method: "POST"
                 })
             }
@@ -124,4 +138,5 @@ export const goMindApi = createApi({
 export const {useLoginMutation, useGetUserProfileQuery, useRefreshTokenMutation, useRefreshTokenCookieMutation,
     useGetAllUsersQuery, useApproveAdvertisementMutation, useRejectAdvertisementMutation , useGetAdvertisementsByCostQuery,
     useGetSuspiciousWinsQuery, useGetFileSystemImageByIdQuery, useGetAdvertisementByIdQuery,
-    useCatchPearsMutation, useGetWithdrawalsQuery, useApproveWithdrawalMutation, useRejectWithdrawalMutation} = goMindApi
+    useCatchPearsMutation, useGetWithdrawalsQuery, useApproveWithdrawalMutation,
+    useRejectWithdrawalMutation, useLogoutMutation} = goMindApi
