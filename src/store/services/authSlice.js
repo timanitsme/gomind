@@ -1,11 +1,16 @@
 import { createSlice } from '@reduxjs/toolkit';
 import { goMindApi } from "./goMind.js";
+import {jwtDecode} from "jwt-decode";
+import getRefreshToken from "../utils/tokenUtils/getRefreshToken.js";
+import getAccessToken from "../utils/tokenUtils/getAccessToken.js";
+import { useLogoutMutation as logoutApi } from "./goMind.js"
 
 const initialState = {
     isAuthorized: false,
     userProfile: null,
     isLoading: true,
     error: null,
+    isInitialized: false
 };
 
 const authSlice = createSlice({
@@ -13,16 +18,16 @@ const authSlice = createSlice({
     initialState,
     reducers: {
         setCredentials: (state, action) => {
+            console.log("hey")
+            const { access_token, refresh_token } = action.payload;
             state.isAuthorized = true;
-            const {accessToken, refreshToken} = action.payload;
-            // Сохранение токенов в куки
-            document.cookie = `jwt-cookie=${accessToken}; path=/; max-age=2592000; Secure; HttpOnly; SameSite=None`;
-            document.cookie = `refresh-jwt-cookie=${refreshToken}; path=/; max-age=2592000; Secure; HttpOnly; SameSite=None`;
+            console.log("Setting tokens:", { access_token, refresh_token });
+            document.cookie = `jwt-cookie=${access_token}; path=/; max-age=2592000; Secure; HttpOnly; SameSite=None`;
+            document.cookie = `refresh-jwt-cookie=${refresh_token}; path=/; max-age=2592000; Secure; HttpOnly; SameSite=None`;
         },
         logout: (state) => {
             state.isAuthorized = false;
             state.userProfile = null;
-            // Удаление токенов из куки
             document.cookie = `jwt-cookie=; path=/; max-age=0; Secure; HttpOnly; SameSite=None`;
             document.cookie = `refresh-jwt-cookie=; path=/; max-age=0; Secure; HttpOnly; SameSite=None`;
         },
@@ -35,28 +40,59 @@ const authSlice = createSlice({
         setError: (state, action) => {
             state.error = action.payload;
         },
+        setIsInitialized: (state, action) => {
+            state.isInitialized = action.payload;
+        },
     },
 });
 
-export const { setCredentials, logout, setUserProfile, setIsLoading, setError } = authSlice.actions;
+export const { setCredentials, logout, setUserProfile, setIsLoading, setError, setIsInitialized } = authSlice.actions;
 
-export const initializeAuthState = () => async (dispatch) => {
-    dispatch(setIsLoading(true))
+
+export const logoutMiddleware =
+    ({ dispatch }) =>
+        (next) =>
+            async (action) => {
+                if (action.type === logout.type) {
+                    try {
+                        // Выполняем запрос на сервер для выхода из системы
+                        await dispatch(goMindApi.endpoints.logout.initiate()).unwrap();
+
+                        // Очищаем куки
+                        document.cookie = `jwt-cookie=; path=/; max-age=0; Secure; HttpOnly; SameSite=None`;
+                        document.cookie = `refresh-jwt-cookie=; path=/; max-age=0; Secure; HttpOnly; SameSite=None`;
+
+                        // Обновляем состояние Redux
+                        next(action);
+                    } catch (error) {
+                        console.error('Ошибка при выходе:', error);
+                    }
+                } else {
+                    next(action);
+                }
+            };
+
+export const initializeAuthState = () => async (dispatch, getState) => {
+    const { isInitialized } = getState().auth;
+    if (isInitialized) return;
+    dispatch(setIsLoading(true)); // Устанавливаем состояние загрузки
+    dispatch(setIsInitialized(true));
+
     try {
+        // Загружаем профиль пользователя через API
         const response = await dispatch(goMindApi.endpoints.getUserProfile.initiate());
         if (response.data) {
-            console.log("initializeAuthState: You are authorized!")
             const { accessToken, refreshToken } = response.data;
             dispatch(setCredentials({ accessToken, refreshToken }));
-            dispatch(setUserProfile(response.data));
-        } else {
-            dispatch(logout());
+            console.log("initializeAuthState: Пользователь авторизован");
+            dispatch(setUserProfile(response.data)); // Устанавливаем данные профиля
         }
     } catch (error) {
         console.error('Ошибка при проверке сессии:', error);
-        dispatch(logout());
+        dispatch(logout()); // Выполняем выход в случае ошибки
     } finally {
-        dispatch(setIsLoading(false))
+        console.log("setting isLoading")
+        dispatch(setIsLoading(false)); // Снимаем состояние загрузки
     }
 };
 
