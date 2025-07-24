@@ -1,7 +1,6 @@
 import {logout, setCredentials} from "../services/authSlice.js";
 import {goMindApi} from "../services/goMind.js";
 import {isRejectedWithValue} from "@reduxjs/toolkit/react";
-import getRefreshToken from "../utils/tokenUtils/getRefreshToken.js";
 
 let isRefreshing = false;
 let refreshAttempts = 0;

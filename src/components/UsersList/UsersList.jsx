@@ -70,6 +70,7 @@ export default function UsersList(){
     const columns = useMemo(() => [
         {field: 'id', headerName: "Id", flex: 1},
         {field: 'email', headerName: "Email", flex: 3},
+        {field: 'nickname', headerName: "Никнейм", flex: 3},
         {field: 'role', headerName: "Роль", flex: 2, type: 'singleSelect', valueOption: ['ADMIN','USER'], editable: true},
         {field: 'photo', headerName: "Аватар", flex: 1, renderCell: (params) => (
                 <Box
@@ -84,6 +85,9 @@ export default function UsersList(){
                 </Box>
             ), sortable: false, filterable: false, headerAlign: 'center'},
         {field: 'activationCode', headerName: "Активен", flex: 2, type: 'boolean', editable: true, headerAlign: 'center'},
+        {field: 'pears', headerName: "Груши", flex: 1, headerAlign: 'center', align: "center"},
+        {field: 'points', headerName: "Очки", flex: 1, headerAlign: 'center', align: "center"},
+        {field: 'honeycombs', headerName: "Соты", flex: 1, headerAlign: 'center', align: "center"},
         {
             field: 'actions', // Новый столбец для меню действий
             headerName: "Действия",
@@ -161,7 +165,7 @@ export default function UsersList(){
                         setSelectedUser(null);
                     }}
                 >
-                    <MenuItem onClick={() => {setAnchorEl(null); setModalAction("deduction"); openModal("Списание груш")}}>Списать груши</MenuItem>
+                    {/*<MenuItem onClick={() => {setAnchorEl(null); setModalAction("deduction"); openModal("Списание груш")}}>Списать груши</MenuItem>*/}
                     <MenuItem onClick={() => {setAnchorEl(null); setModalAction("accrual"); openModal("Начисление груш")} }>Начислить груши</MenuItem>
                 </Menu>
                 <SimpleModal show={showModal} setShow={setShowModal} title={modalTitle}>
