@@ -9,7 +9,6 @@
     padding: 10px;
     display: flex;
     flex-direction: column;
-
     gap: 5px;
     height: 100%;
 }
@@ -80,6 +79,19 @@
 .buttonsContainer .error:hover{
     background: var(--err-hover);
     transition: 0.5s;
+}
+
+.flexCols{
+    margin-top: auto;
+    display: flex;
+    gap: 10px;
+    justify-content: space-around;
+}
+
+.flexCols div{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
 }
 
 .secondary{
@@ -165,4 +177,11 @@
     width: 20px;
     height: min-content;
     color: var(--fg);
+}
+
+.hrtLine{
+    height: 100%;
+    width: 2px;
+    background: var(--btn-secondary);
+    border-radius: 2px;
 }
