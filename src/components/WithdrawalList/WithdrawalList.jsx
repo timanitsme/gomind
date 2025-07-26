@@ -14,7 +14,7 @@ import useFetchAllUsers from "../../utils/customHooks/useFetchAllUsers.js";
 export default function WithdrawalList({status}){
     const navigate = useNavigate()
     const {data: cards, isLoading: cardsIsLoading, error: cardsError, refetch} = useGetWithdrawalsQuery({status: status}, { forceRefetch: true, refetchOnMountOrArgChange: true })
-    const { allUsers, isLoading: usersIsLoading, error: usersError } = useFetchAllUsers();
+    const { allUsers, isLoading: usersIsLoading, error: usersError, hasMore: hasMoreUsers } = useFetchAllUsers();
     useEffect(() => {
         refetch();
     }, [status, refetch]);
@@ -26,7 +26,7 @@ export default function WithdrawalList({status}){
 
     useEffect(() => {
         // Обновляем данные при изменении статуса или пользователей
-        if (!cardsIsLoading && !usersIsLoading && cards && allUsers) {
+        if (!cardsIsLoading && !usersIsLoading && cards && allUsers && !hasMoreUsers) {
             const merged = cards?.map((card) => {
                 const user = allUsers.find((u) => u.email === card.username);
                 return {
@@ -39,20 +39,11 @@ export default function WithdrawalList({status}){
     }, [cards, allUsers, cardsIsLoading, usersIsLoading]);
 
 
-    useEffect(() => {
-        console.log(`isLoading: ${cardsIsLoading}`)
-    }, [cardsIsLoading]);
-
-    useEffect(() => {
-        console.log(`cards error: ${cardsError}`)
-    }, [cardsError])
-
     if (cardsIsLoading || usersIsLoading){
         return <div className={styles.centerContainer}><div className={styles.center}><CircularProgress></CircularProgress></div></div>
     }
 
     if (!cardsIsLoading && !cardsError && mergedData.length === 0){
-        console.log("noCards")
         return (
             <div className={styles.centerContainer}>
                 <div className={styles.center}><p>Нет доступных заявок</p></div>
@@ -61,7 +52,6 @@ export default function WithdrawalList({status}){
     }
 
     if (!cardsIsLoading && !cardsError){
-        {console.log(cards[0])}
         return(
             <div>
                 <div className={styles.cardsContainer}>

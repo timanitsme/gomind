@@ -7,6 +7,7 @@ import {useNavigate} from "react-router-dom";
 import {toast} from "react-toastify";
 import styles from "../AdCard/AdCard.module.css";
 import SimpleModal from "../Modals/SimpleModal/SimpleModal.jsx";
+import getFormattedDate from "../../utils/customFunctions/getFormattedDate.js";
 
 const WithdrawalCard = ({ card, onChange }) => {
     const navigate = useNavigate()
@@ -49,6 +50,7 @@ const WithdrawalCard = ({ card, onChange }) => {
     return (
         <div>
             <div key={card?.id} onClick={() => {} } className={styles.adCard}>
+                {card?.createdAt && <p className={styles.secondary} style={{textAlign: "right"}}>{getFormattedDate(card.createdAt)}</p>}
                 <p className={styles.title}>{card?.username}</p>
                 {card?.paymentDetails && <p className={styles.secondary}><span style={{color: "black"}}>Реквизиты:</span> {card?.paymentDetails}</p>}
 

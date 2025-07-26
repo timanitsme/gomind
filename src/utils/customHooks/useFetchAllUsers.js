@@ -4,34 +4,54 @@ import {useGetAllUsersQuery} from "../../store/services/goMind.js";
 
 export default function useFetchAllUsers() {
     const [allUsers, setAllUsers] = useState([]);
+    const [page, setPage] = useState(0);
+    const [size, setSize] = useState(10); // Размер страницы
+    const [hasMore, setHasMore] = useState(true);
     const [isLoading, setIsLoading] = useState(true);
     const [error, setError] = useState(null);
 
-    // Вызываем хук напрямую в теле пользовательского хука
-    const fetchUsers = async (page = 1, size = 10) => {
-        try {
-            const response = await useGetAllUsersQuery({ page, size }).unwrap();
-            const { content, totalPages, pageNumber } = response;
+    const { data, isLoading: isQueryLoading, isError, error: queryError } = useGetAllUsersQuery({ page, size });
 
-            // Добавляем текущую страницу пользователей
-            setAllUsers((prevUsers) => [...prevUsers, ...content]);
+    // Обработка данных при получении
+    useEffect(() => {
+        if (data) {
+            const { users, totalPages, pageNumber } = data;
 
-            // Если это не последняя страница, запрашиваем следующую
+            // Добавляем новых пользователей
+            setAllUsers((prev) => [...prev, ...users]);
+
+            // Проверяем, есть ли ещё страницы
             if (pageNumber < totalPages - 1) {
-                await fetchUsers(page + 1, size); // Рекурсивный вызов
+                setPage((prevPage) => prevPage + 1); // Запрашиваем следующую страницу
             } else {
-                setIsLoading(false); // Закончили загрузку
+                setHasMore(false); // Больше страниц нет
+                setIsLoading(false);
             }
-        } catch (err) {
-            setError(err);
+        }
+    }, [data]);
+
+    // Обработка ошибок
+    useEffect(() => {
+        if (isError) {
+            setError(queryError);
             setIsLoading(false);
         }
+    }, [isError, queryError]);
+
+    // Сброс состояния при повторном вызове
+    const reset = () => {
+        setAllUsers([]);
+        setPage(0);
+        setHasMore(true);
+        setError(null);
+        setIsLoading(true);
     };
 
-    useEffect(() => {
-        // Вызываем fetchUsers внутри useEffect
-        fetchUsers();
-    }, []); // Зависимости пустые, так как fetchUsers не зависит от внешних данных
-
-    return { allUsers, isLoading, error };
+    return {
+        allUsers,
+        isLoading: isLoading || isQueryLoading,
+        error,
+        hasMore,
+        reset
+    };
 }
