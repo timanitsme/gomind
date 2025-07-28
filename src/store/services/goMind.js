@@ -35,6 +35,14 @@ export const goMindApi = createApi({
                     body: credentials
                 })}
         }),
+        register: builder.mutation({
+            query: (credentials) => {
+                return({
+                    url: 'authentication/register',
+                    method: 'POST',
+                    body: credentials
+                })}
+        }),
         getUserProfile: (builder.query({
             query: () => `user/profile`
         })),
@@ -139,4 +147,4 @@ export const {useLoginMutation, useGetUserProfileQuery, useRefreshTokenMutation,
     useGetAllUsersQuery, useApproveAdvertisementMutation, useRejectAdvertisementMutation , useGetAdvertisementsByCostQuery,
     useGetSuspiciousWinsQuery, useGetFileSystemImageByIdQuery, useGetAdvertisementByIdQuery,
     useCatchPearsMutation, useGetWithdrawalsQuery, useApproveWithdrawalMutation,
-    useRejectWithdrawalMutation, useLogoutMutation} = goMindApi
+    useRejectWithdrawalMutation, useLogoutMutation, useRegisterMutation} = goMindApi

@@ -1,4 +1,4 @@
-import {logout, setCredentials} from "../services/authSlice.js";
+import {initializeAuthState, logout, setCredentials, setIsLoading} from "../services/authSlice.js";
 import {goMindApi} from "../services/goMind.js";
 import {isRejectedWithValue} from "@reduxjs/toolkit/react";
 
@@ -21,7 +21,15 @@ export const authMiddleware =
                         try {
                             // Попытка обновить токен
                             const refreshResult = await dispatch(goMindApi.endpoints.refreshTokenCookie.initiate());
-                            if (refreshResult.data) {
+                            if (refreshResult.error){
+                                await dispatch(logout())
+                                await dispatch(setIsLoading(false))
+                                console.log("error while refresh")
+                            }
+                            else{
+                                return dispatch(initializeAuthState(true))
+                            }
+                            /*if (refreshResult.data) {
                                 console.log('Refresh successful:', refreshResult.data);
                                 await dispatch(setCredentials(refreshResult.data));
                                 console.log('Action:', JSON.stringify(action));
@@ -33,7 +41,7 @@ export const authMiddleware =
                                     console.warn('Original arguments are not available');
                                     return next(action);
                                 }
-                            }
+                            }*/
                         } catch (error) {
                             console.error(`refresh error: ${error}`)
                             await dispatch(logout())
