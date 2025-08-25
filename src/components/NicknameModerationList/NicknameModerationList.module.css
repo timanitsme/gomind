@@ -1,0 +1,93 @@
+.approve, .reject{
+    padding: 7px;
+    border-radius: 7px;
+    width: 100%;
+    cursor: pointer;
+}
+
+.approve svg, .reject svg{
+    color: white;
+}
+
+.approve{
+    background: var(--success-primary);
+}
+
+.reject{
+    background: var(--err-primary);
+}
+
+.approve:hover{
+    background: var(--success-secondary);
+    transition: 0.3s;
+}
+
+.reject:hover{
+    background: var(--err-secondary);
+    transition: 0.3s;
+}
+
+.authForm{
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    padding: 5px 50px;
+}
+
+.authForm input{
+    outline: none;
+    border: 2px solid var(--primary);
+    border-radius: 8px;
+    padding: 8px;
+}
+
+.authForm textarea{
+    outline: none;
+    border: 2px solid var(--primary);
+    border-radius: 8px;
+    padding: 8px;
+    resize: none;
+    height: 150px;
+}
+
+.authForm label{
+    color: var(--txt-primary);
+    display: flex;
+    flex-direction: column;
+    justify-content: left;
+    align-content: flex-start;
+    text-align: left;
+    font-weight: bold;
+    gap: 5px
+}
+
+.authForm button{
+    background: var(--primary);
+    outline: none;
+    color: var(--fg);
+    border: none;
+    padding: 10px;
+    border-radius: 15px;
+    font-weight: bold;
+    align-self: center;
+    width: 200px;
+    cursor: pointer;
+
+}
+
+.authForm button:hover{
+    background: var(--btn-hover);
+    transition: 0.5s;
+}
+
+.authForm span{
+    font-weight: 500;
+    color: var(--err-primary);
+    font-size: 0.8rem;
+}
+
+.authForm input.error{
+    border: 2px solid var(--err-primary);
+}
+
+

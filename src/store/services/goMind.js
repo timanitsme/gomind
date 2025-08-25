@@ -27,6 +27,8 @@ export const goMindApi = createApi({
     reducerPath: "goMindApi",
     baseQuery: baseQuery,
     endpoints: (builder) => ({
+
+        // authentication
         login: builder.mutation({
             query: (credentials) => {
                 return({
@@ -43,15 +45,12 @@ export const goMindApi = createApi({
                     body: credentials
                 })}
         }),
-        getUserProfile: (builder.query({
-            query: () => `user/profile`
-        })),
         refreshToken: builder.mutation({
             query: (refreshToken) => {
                 return({
-                  url: 'authentication/refresh-token',
-                  method: "POST",
-                  body: refreshToken
+                    url: 'authentication/refresh-token',
+                    method: "POST",
+                    body: refreshToken
                 })}
         }),
         refreshTokenCookie: builder.mutation({
@@ -70,6 +69,21 @@ export const goMindApi = createApi({
                 })
             }
         }),
+
+        // user
+        getUserProfile: (builder.query({
+            query: () => `user/profile`
+        })),
+        catchPears: builder.mutation({
+            query: ({userId, pearsCaught}) => {
+                return({
+                    url: `user/catch-pear?userId=${userId}&pearsCaught=${pearsCaught}`,
+                    method: 'POST'
+                })
+            }
+        }),
+
+        //admin
         getAllUsers: (builder.query({
             query:  ({page, size}) =>{
                 const params = new URLSearchParams();
@@ -94,31 +108,11 @@ export const goMindApi = createApi({
                 })
             }
         }),
-        getAdvertisementsByCost: (builder.query({
-            query: ({status}) => `advertisements/advertisements-by-moderation-status?status=${status}`
-        })),
-        getAdvertisementById: (builder.query({
-            query: ({id}) => `advertisements/get-by-id/${id}`
-        })),
         getSuspiciousWins: (builder.query({
             query: ({limit}) =>{
                 return(`admin/suspicious-wins?limit=${limit.toString()}`)
             }
         })),
-        getFileSystemImageById: (builder.query({
-            query: ({fileDataId}) =>({
-                url: `files/file-system-image-by-id/${Number(fileDataId)}`,
-                responseHandler: (response) => response.blob()
-            })
-        })),
-        catchPears: builder.mutation({
-            query: ({userId, pearsCaught}) => {
-                return({
-                    url: `user/catch-pear?userId=${userId}&pearsCaught=${pearsCaught}`,
-                    method: 'POST'
-                })
-            }
-        }),
         getWithdrawals: (builder.query({
             query: ({status}) => `admin/withdrawals?status=${status}`
         })),
@@ -138,6 +132,67 @@ export const goMindApi = createApi({
                 })
             }
         }),
+        banUser: builder.mutation({
+            query: ({userId, reason}) => {
+                return({
+                    url: `admin/ban-user`,
+                    method: 'POST',
+                    body: {userId, reason}
+                })
+            }
+        }),
+        rejectNickname: builder.mutation({
+           query: ({userId, reason}) => {
+               return({
+                   url: 'admin/nickname/reject',
+                   method: 'POST',
+                   body: {userId, reason}
+               })
+           }
+        }),
+        approveNickname: builder.mutation({
+            query: ({userId, reason}) => {
+                return({
+                    url: 'admin/nickname/approve',
+                    method: "POST",
+                    body: {userId, reason}
+                })
+            }
+        }),
+        getPendingNicknames: (builder.query({
+            query: () => `admin/nickname/pending`
+        })),
+        getBannedUsers: (builder.query({
+            query:  ({page, size}) =>{
+                const params = new URLSearchParams();
+                params.append('page', page.toString());
+                params.append('size', size.toString());
+                return(`admin/banned-users?${params.toString()}`)
+            }
+        })),
+
+        // advertisements
+        getAdvertisementsByCost: (builder.query({
+            query: ({status}) => `advertisements/advertisements-by-moderation-status?status=${status}`
+        })),
+        getAdvertisementById: (builder.query({
+            query: ({id}) => `advertisements/get-by-id/${id}`
+        })),
+
+        // files
+        getFileSystemImageById: (builder.query({
+            query: ({fileDataId}) =>({
+                url: `files/file-system-image-by-id/${Number(fileDataId)}`,
+                responseHandler: (response) => response.blob()
+            })
+        })),
+
+        // quiz
+        getWinnersHistory: (builder.query({
+            query: ({limit}) => ({
+                url: `quiz/admin/winners-history?limit=${limit}`
+            })
+        }))
     })
 })
 
@@ -147,4 +202,7 @@ export const {useLoginMutation, useGetUserProfileQuery, useRefreshTokenMutation,
     useGetAllUsersQuery, useApproveAdvertisementMutation, useRejectAdvertisementMutation , useGetAdvertisementsByCostQuery,
     useGetSuspiciousWinsQuery, useGetFileSystemImageByIdQuery, useGetAdvertisementByIdQuery,
     useCatchPearsMutation, useGetWithdrawalsQuery, useApproveWithdrawalMutation,
-    useRejectWithdrawalMutation, useLogoutMutation, useRegisterMutation} = goMindApi
+    useRejectWithdrawalMutation, useLogoutMutation, useRegisterMutation,
+    useGetWinnersHistoryQuery, useBanUserMutation, useRejectNicknameMutation,
+    useApproveNicknameMutation, useGetPendingNicknamesQuery,
+    useGetBannedUsersQuery} = goMindApi

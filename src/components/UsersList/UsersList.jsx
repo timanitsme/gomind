@@ -1,7 +1,7 @@
 import {Avatar, Box, CircularProgress, IconButton, Menu, MenuItem} from "@mui/material";
 import {DataGrid} from "@mui/x-data-grid";
 import {useEffect, useMemo, useState} from "react";
-import {useCatchPearsMutation, useGetAllUsersQuery} from "../../store/services/goMind.js";
+import {useBanUserMutation, useCatchPearsMutation, useGetAllUsersQuery} from "../../store/services/goMind.js";
 import {ruRU} from "@mui/x-data-grid/locales";
 import {MdMoreVert} from "react-icons/md";
 import SimpleModal from "../Modals/SimpleModal/SimpleModal.jsx";
@@ -20,9 +20,12 @@ export default function UsersList(){
     const [rowId, setRowId] = useState(null)
     const [anchorEl, setAnchorEl] = useState(null);
     const [showModal, setShowModal] = useState(false)
+    const [showBanModal, setShowBanModal] = useState(false)
     const [modalTitle, setModalTitle] = useState("")
     const [pears, setPears] = useState(0)
     const [addPears, {isLoading, isSuccess, error}] = useCatchPearsMutation()
+    const [banUser, {}] = useBanUserMutation()
+    const [reason, setReason] = useState("")
 
     const handlePearsChange = (e) =>{
         const inputValue = e.target.value;
@@ -33,6 +36,10 @@ export default function UsersList(){
         } else if (inputValue === "") {
             setPears(0);
         }
+    }
+
+    const handleReasonChange = (e) => {
+        setReason(e.target.value);
     }
 
     const handleSubmit = async (e) => {
@@ -60,10 +67,27 @@ export default function UsersList(){
 
     };
 
+    const handleBanUser = async (e) => {
+        e.preventDefault()
+        try{
+            await banUser({userId: selectedUser.id, reason}).unwrap();
+            setShowBanModal(false);
+            setReason("");
+            toast.success(`Пользователь ${selectedUser.nickname} успешно заблокирован`)
+            refetch()
+        }
+        catch (_){
+            toast.error('Ошибка во время блокировки пользователя')
+        }
+    }
+
 
     const openModal = (title) => {
         setModalTitle(title)
-        setShowModal(true)
+        if (title === "Начисление груш")
+            setShowModal(true)
+        else if (title === "Блокировка пользователя")
+            setShowBanModal(true)
     }
 
 
@@ -167,11 +191,20 @@ export default function UsersList(){
                 >
                     {/*<MenuItem onClick={() => {setAnchorEl(null); setModalAction("deduction"); openModal("Списание груш")}}>Списать груши</MenuItem>*/}
                     <MenuItem onClick={() => {setAnchorEl(null); setModalAction("accrual"); openModal("Начисление груш")} }>Начислить груши</MenuItem>
+                    <MenuItem onClick={() => {setAnchorEl(null); setModalAction("accrual"); openModal("Блокировка пользователя")} }>Заблокировать пользователя</MenuItem>
                 </Menu>
                 <SimpleModal show={showModal} setShow={setShowModal} title={modalTitle}>
                     <form className={styles.authForm} onSubmit={handleSubmit}>
                         <label>Количество груш
                             <input type="text" name="pears" value={pears} placeholder="0" onChange={handlePearsChange}/>
+                        </label>
+                        <button type="submit">Подтвердить</button>
+                    </form>
+                </SimpleModal>
+                <SimpleModal show={showBanModal} setShow={setShowBanModal} title={modalTitle}>
+                    <form className={styles.authForm} onSubmit={handleBanUser}>
+                        <label>Причина блокировки
+                            <textarea name="reason" value={reason} onChange={handleReasonChange}/>
                         </label>
                         <button type="submit">Подтвердить</button>
                     </form>

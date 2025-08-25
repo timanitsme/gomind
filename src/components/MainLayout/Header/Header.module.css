@@ -135,6 +135,15 @@
     padding: 8px;
 }
 
+.authForm textarea{
+    outline: none;
+    border: 2px solid var(--primary);
+    border-radius: 8px;
+    padding: 8px;
+    resize: none;
+    height: 150px;
+}
+
 .authForm label{
     color: var(--txt-primary);
     display: flex;
