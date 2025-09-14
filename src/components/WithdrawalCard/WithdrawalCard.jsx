@@ -67,7 +67,7 @@ const WithdrawalCard = ({ card, onChange }) => {
                     }
                     <div>
                         <p className={styles.secondary}><span style={{color: "black"}}>Баланс: </span></p>
-                        <p className={styles.secondary}>{card.pears}</p>
+                        <p className={styles.secondary}>{card.balanceAtCreation? card.balanceAtCreation: 0} {`->`} <span className={styles.primary}>{card.balanceAtAction? card.balanceAtAction: 0}</span></p>
                     </div>
 
                 </div>

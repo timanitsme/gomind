@@ -1,6 +1,6 @@
 import {useEffect, useMemo, useState} from "react";
-import {useGetBannedUsersQuery, useGetWinnersHistoryQuery} from "../../store/services/goMind.js";
-import {Avatar, Box, CircularProgress} from "@mui/material";
+import {useGetWinnersHistoryQuery} from "../../store/services/goMind.js";
+import {Box, CircularProgress} from "@mui/material";
 import {DataGrid} from "@mui/x-data-grid";
 import {ruRU} from "@mui/x-data-grid/locales";
 import getFormattedDate from "../../utils/customFunctions/getFormattedDate.js";
@@ -18,6 +18,7 @@ export default function WinnersList(){
         {field: 'quizId', headerName: "Id викторины", flex: 1},
         {field: 'winnerId', headerName: "Id победителя", flex: 1},
         {field: 'nickname', headerName: "Никнейм", flex: 3},
+        {field: 'email', headerName: "Email", flex: 3},
         {field: 'prize', headerName: "Выигрыш", flex: 1, headerAlign: 'center', align: "center"},
         {
             field: 'startedAt',

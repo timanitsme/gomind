@@ -98,6 +98,11 @@
     color: var(--txt-secondary);
 }
 
+.primary{
+    color: var(--primary);
+    font-weight: bold;
+}
+
 .adCard .cost {
     font-weight: bold;
     color: var(--primary);
