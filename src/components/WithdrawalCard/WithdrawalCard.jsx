@@ -1,13 +1,13 @@
 import {
-    useApproveAdvertisementMutation, useApproveWithdrawalMutation,
-    useGetFileSystemImageByIdQuery,
-    useRejectAdvertisementMutation, useRejectWithdrawalMutation
+    useApproveWithdrawalMutation,
+    useRejectWithdrawalMutation
 } from "../../store/services/goMind.js";
 import {useEffect, useState} from "react";
 import {useNavigate} from "react-router-dom";
 import {toast} from "react-toastify";
 import styles from "../AdCard/AdCard.module.css";
 import SimpleModal from "../Modals/SimpleModal/SimpleModal.jsx";
+import getFormattedDate from "../../utils/customFunctions/getFormattedDate.js";
 
 const WithdrawalCard = ({ card, onChange }) => {
     const navigate = useNavigate()
@@ -15,7 +15,6 @@ const WithdrawalCard = ({ card, onChange }) => {
     const [acceptWithdrawal, {isLoading: acceptIsLoading, isError: acceptIsError, isSuccess: acceptIsSuccess}] = useApproveWithdrawalMutation()
     const [modalShow, setModalShow] = useState(false)
     const [reason, setReason] = useState("")
-
     const handleReasonChange = (e) => {
         setReason(e.target.value)
     }
@@ -51,10 +50,27 @@ const WithdrawalCard = ({ card, onChange }) => {
     return (
         <div>
             <div key={card?.id} onClick={() => {} } className={styles.adCard}>
+                {card?.createdAt && <p className={styles.secondary} style={{textAlign: "right"}}>{getFormattedDate(card.createdAt)}</p>}
                 <p className={styles.title}>{card?.username}</p>
-                {card?.paymentDetails && <p className={styles.secondary}>Реквизиты: {card?.paymentDetails}</p>}
-                {card?.amount && <p className={styles.secondary}>Количество: {card?.amount}</p>}
-                {card?.rejectionReason && <p className={styles.secondary}>Причина отклонения: {card?.rejectionReason}</p>}
+                {card?.paymentDetails && <p className={styles.secondary}><span style={{color: "black"}}>Реквизиты:</span> {card?.paymentDetails}</p>}
+
+                {card?.rejectionReason && <p className={styles.secondary}><span style={{color: "black"}}>Причина отклонения:</span> {card?.rejectionReason}</p>}
+                <div className={styles.flexCols}>
+                    {card?.amount &&
+                    <>
+                        <div>
+                            <p className={styles.secondary}><span style={{color: "black"}}>Количество:</span></p>
+                            <p className={styles.secondary}>{card?.amount}</p>
+                        </div>
+                        <div className={styles.hrtLine}></div>
+                    </>
+                    }
+                    <div>
+                        <p className={styles.secondary}><span style={{color: "black"}}>Баланс: </span></p>
+                        <p className={styles.secondary}>{card.balanceAtCreation? card.balanceAtCreation: 0} {`->`} <span className={styles.primary}>{card.balanceAtAction? card.balanceAtAction: 0}</span></p>
+                    </div>
+
+                </div>
                 {card?.status === "PENDING" &&
                     <div className={styles.buttonsContainer}>
                         <button className={styles.error} onClick={(e) => {e.stopPropagation(); showRejectionModal()}}>Отклонить</button>

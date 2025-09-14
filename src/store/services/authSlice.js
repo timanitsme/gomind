@@ -43,10 +43,13 @@ const authSlice = createSlice({
         setIsInitialized: (state, action) => {
             state.isInitialized = action.payload;
         },
+        setIsRefreshing: (state, action) => {
+            state.isInitialized = action.payload;
+        },
     },
 });
 
-export const { setCredentials, logout, setUserProfile, setIsLoading, setError, setIsInitialized } = authSlice.actions;
+export const { setCredentials, logout, setUserProfile, setIsLoading, setError, setIsInitialized, setIsRefreshing } = authSlice.actions;
 
 
 export const logoutMiddleware =
@@ -72,27 +75,28 @@ export const logoutMiddleware =
                 }
             };
 
-export const initializeAuthState = () => async (dispatch, getState) => {
+export const initializeAuthState = (needToRefresh=false) => async (dispatch, getState) => {
     const { isInitialized } = getState().auth;
-    if (isInitialized) return;
+    if (!needToRefresh && isInitialized) return;
     dispatch(setIsLoading(true)); // Устанавливаем состояние загрузки
     dispatch(setIsInitialized(true));
 
     try {
         // Загружаем профиль пользователя через API
-        const response = await dispatch(goMindApi.endpoints.getUserProfile.initiate());
+        const response = await dispatch(goMindApi.endpoints.getUserProfile.initiate({ _timestamp: Date.now() }, { forceRefetch: true }));
         if (response.data) {
             const { accessToken, refreshToken } = response.data;
             dispatch(setCredentials({ accessToken, refreshToken }));
             console.log("initializeAuthState: Пользователь авторизован");
             dispatch(setUserProfile(response.data)); // Устанавливаем данные профиля
+            dispatch(setIsLoading(false))
         }
     } catch (error) {
         console.error('Ошибка при проверке сессии:', error);
         dispatch(logout()); // Выполняем выход в случае ошибки
+        dispatch(setIsLoading(false))
     } finally {
         console.log("setting isLoading")
-        dispatch(setIsLoading(false)); // Снимаем состояние загрузки
     }
 };
 

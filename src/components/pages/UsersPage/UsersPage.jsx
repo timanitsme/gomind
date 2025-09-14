@@ -1,11 +1,10 @@
-import styles from "./UsersPage.module.css"
-import {useEffect, useState} from "react";
-import {Outlet, useLocation, useNavigate} from "react-router-dom";
 import TabsSection from "../../TabsSection/TabsSection.jsx";
 
 export default function UsersPage(){
     const tabs = [
-        {title: "Список пользователей", path: 'usersList'},
+        {title: "Все пользователи", path: 'usersList'},
+        {title: "Заблокированные пользователи", path: "bannedUsers"},
+        {title: "Модерация никнеймов", path: "nicknameModeration"},
         {title: "Добавить пользователя", path: 'usersAdd'},
     ]
 
